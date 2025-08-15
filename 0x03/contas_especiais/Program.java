@@ -29,7 +29,7 @@ public class Program {
         }
 
         try {
-            ContaBancariaControlada conta3 = new ContaBancariaControlada("CCC", 30. 0, 20, 5);
+            ContaBancariaControlada conta3 = new ContaBancariaControlada("CCC", 30.0, 20, 5);
             System.out.printf(new Locale("pt", "BR"),"Conta %s - saldo: %.2f\n", conta3.getNumeracao(), conta3.getSaldo());
             conta3.depositar(125);
             System.out.printf(new Locale("pt", "BR"),"Conta %s - saldo: %.2f\n", conta3.getNumeracao(), conta3.getSaldo());
