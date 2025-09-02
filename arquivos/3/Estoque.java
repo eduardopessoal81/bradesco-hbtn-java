@@ -2,110 +2,91 @@ import java.io.*;
 import java.util.*;
 
 public class Estoque {
-    private List<Produto> produtos;
-    private String arquivo;
+    private List<Produto> produtos = new ArrayList<>();
+    private String arquivoCSV;
 
-    public Estoque(String arquivo) {
-        this.arquivo = arquivo;
-        this.produtos = new ArrayList<>();
-        carregarProdutos();
+    public Estoque(String arquivoCSV) {
+        this.arquivoCSV = arquivoCSV;
+        carregar();
     }
 
-    private void carregarProdutos() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(arquivo))) {
+    public void carregar() {
+        produtos.clear();
+        try (BufferedReader br = new BufferedReader(new FileReader(arquivoCSV))) {
             String linha;
-            while ((linha = reader.readLine()) != null) {
+            while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(",");
                 if (dados.length == 4) {
-                    try {
-                        int id = Integer.parseInt(dados[0]);
-                        String nome = dados[1];
-                        int quantidade = Integer.parseInt(dados[2]);
-                        double preco = Double.parseDouble(dados[3]);
-                        produtos.add(new Produto(id, nome, quantidade, preco));
-                    } catch (NumberFormatException e) {
-                        System.err.println("Erro ao processar linha: " + linha);
-                    }
+                    int id = Integer.parseInt(dados[0]);
+                    String nome = dados[1];
+                    int quantidade = Integer.parseInt(dados[2]);
+                    double preco = Double.parseDouble(dados[3]);
+                    produtos.add(new Produto(id, nome, quantidade, preco));
                 }
             }
+        } catch (FileNotFoundException e) {
+            System.out.println("Arquivo não encontrado, criando novo...");
         } catch (IOException e) {
-            System.err.println("Erro ao ler o arquivo: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    private void salvarProdutos() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivo))) {
-            for (Produto produto : produtos) {
-                writer.write(produto.toCsv());
-                writer.newLine();
+    public void salvar() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(arquivoCSV))) {
+            for (Produto p : produtos) {
+                bw.write(p.toCSV());
+                bw.newLine();
             }
         } catch (IOException e) {
-            System.err.println("Erro ao salvar no arquivo: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    public void adicionarProduto(String nome, int quantidade, double preco) {
-        if (nome == null || nome.trim().isEmpty()) {
-            System.out.println("Nome do produto não pode ser vazio!");
-            return;
-        }
-        if (quantidade < 0) {
-            System.out.println("Quantidade não pode ser negativa!");
-            return;
-        }
-        if (preco < 0) {
-            System.out.println("Preço não pode ser negativo!");
-            return;
-        }
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
 
-        int novoId = produtos.isEmpty() ? 1 : produtos.get(produtos.size() - 1).getId() + 1;
-        
+    public boolean adicionarProduto(Produto produto) {
         for (Produto p : produtos) {
-            if (p.getNome().equalsIgnoreCase(nome)) {
-                System.out.println("Produto com este nome já existe!");
-                return;
+            if (p.getId() == produto.getId()) {
+                return false;
             }
         }
-
-        Produto produto = new Produto(novoId, nome, quantidade, preco);
         produtos.add(produto);
-        salvarProdutos();
-        System.out.println("Produto adicionado com sucesso!");
+        salvar();
+        return true;
     }
 
-    public void excluirProduto(int id) {
-        boolean removido = produtos.removeIf(produto -> produto.getId() == id);
-        if (removido) {
-            salvarProdutos();
-            System.out.println("Produto excluído com sucesso!");
-        } else {
-            System.out.println("Produto com ID " + id + " não encontrado!");
-        }
-    }
-
-    public void atualizarQuantidade(int id, int novaQuantidade) {
-        if (novaQuantidade < 0) {
-            System.out.println("Quantidade não pode ser negativa!");
-            return;
-        }
-
-        for (Produto produto : produtos) {
-            if (produto.getId() == id) {
-                produto.setQuantidade(novaQuantidade);
-                salvarProdutos();
-                System.out.println("Quantidade atualizada com sucesso!");
-                return;
+    public boolean excluirProduto(int id) {
+        Iterator<Produto> it = produtos.iterator();
+        while (it.hasNext()) {
+            Produto p = it.next();
+            if (p.getId() == id) {
+                it.remove();
+                salvar();
+                return true;
             }
         }
-        System.out.println("Produto com ID " + id + " não encontrado!");
+        return false;
+    }
+
+    public boolean atualizarQuantidade(int id, int novaQuantidade) {
+        for (Produto p : produtos) {
+            if (p.getId() == id) {
+                p.setQuantidade(novaQuantidade);
+                salvar();
+                return true;
+            }
+        }
+        return false;
     }
 
     public void exibirEstoque() {
         if (produtos.isEmpty()) {
             System.out.println("Estoque vazio!");
         } else {
-            for (Produto produto : produtos) {
-                System.out.println(produto);
+            for (Produto p : produtos) {
+                System.out.println(p);
             }
         }
     }
