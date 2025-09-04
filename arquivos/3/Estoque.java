@@ -1,59 +1,63 @@
+package gerenciador;
+
 import java.io.*;
 import java.util.*;
 
 public class Estoque {
-    private List<Produto> produtos = new ArrayList<>();
-    private String arquivoCSV;
+    private List<Produto> produtos;
+    private final String arquivoCSV;
 
     public Estoque(String arquivoCSV) {
         this.arquivoCSV = arquivoCSV;
-        carregar();
+        this.produtos = new ArrayList<>();
+        carregarDoArquivo();
     }
 
-    public void carregar() {
+    private void carregarDoArquivo() {
         produtos.clear();
         try (BufferedReader br = new BufferedReader(new FileReader(arquivoCSV))) {
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(",");
                 if (dados.length == 4) {
-                    int id = Integer.parseInt(dados[0]);
-                    String nome = dados[1];
-                    int quantidade = Integer.parseInt(dados[2]);
-                    double preco = Double.parseDouble(dados[3]);
+                    int id = Integer.parseInt(dados[0].trim());
+                    String nome = dados[1].trim();
+                    int quantidade = Integer.parseInt(dados[2].trim());
+                    double preco = Double.parseDouble(dados[3].trim());
                     produtos.add(new Produto(id, nome, quantidade, preco));
                 }
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("Arquivo não encontrado, criando novo...");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Erro ao carregar arquivo: " + e.getMessage());
         }
     }
 
-    public void salvar() {
+    private void salvarNoArquivo() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(arquivoCSV))) {
             for (Produto p : produtos) {
-                bw.write(p.toCSV());
+                bw.write(p.toCsv());
                 bw.newLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Erro ao salvar arquivo: " + e.getMessage());
         }
     }
 
-    public List<Produto> getProdutos() {
-        return produtos;
-    }
-
-    public boolean adicionarProduto(Produto produto) {
+    private int gerarNovoId() {
+        int maxId = 0;
         for (Produto p : produtos) {
-            if (p.getId() == produto.getId()) {
-                return false;
+            if (p.getId() > maxId) {
+                maxId = p.getId();
             }
         }
-        produtos.add(produto);
-        salvar();
+        return maxId + 1;
+    }
+
+    public boolean adicionarProduto(String nome, int quantidade, double preco) {
+        int novoId = gerarNovoId();
+        Produto novo = new Produto(novoId, nome, quantidade, preco);
+        produtos.add(novo);
+        salvarNoArquivo();
         return true;
     }
 
@@ -63,7 +67,7 @@ public class Estoque {
             Produto p = it.next();
             if (p.getId() == id) {
                 it.remove();
-                salvar();
+                salvarNoArquivo();
                 return true;
             }
         }
@@ -74,7 +78,7 @@ public class Estoque {
         for (Produto p : produtos) {
             if (p.getId() == id) {
                 p.setQuantidade(novaQuantidade);
-                salvar();
+                salvarNoArquivo();
                 return true;
             }
         }
@@ -83,7 +87,7 @@ public class Estoque {
 
     public void exibirEstoque() {
         if (produtos.isEmpty()) {
-            System.out.println("Estoque vazio!");
+            System.out.println("Estoque vazio.");
         } else {
             for (Produto p : produtos) {
                 System.out.println(p);
