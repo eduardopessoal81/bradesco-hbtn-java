@@ -7,13 +7,8 @@ public class Autor implements Comparable<Autor> {
         this.sobrenome = sobrenome;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public String getSobrenome() {
-        return sobrenome;
-    }
+    public String getNome() { return nome; }
+    public String getSobrenome() { return sobrenome; }
 
     @Override
     public String toString() {
@@ -22,9 +17,7 @@ public class Autor implements Comparable<Autor> {
 
     @Override
     public int compareTo(Autor outro) {
-        int sobrenomeCompare = this.sobrenome.compareTo(outro.sobrenome);
-        if (sobrenomeCompare != 0) return sobrenomeCompare;
-        return this.nome.compareTo(outro.nome);
+        return (this.nome + " " + this.sobrenome).compareTo(outro.nome + " " + outro.sobrenome);
     }
 
     @Override

@@ -59,7 +59,7 @@ public class Blog {
     }
 
     public Map<Autor, Set<Post>> obterTodosPostsPorAutor() {
-        Map<Autor, Set<Post>> map = new HashMap<>();
+        Map<Autor, Set<Post>> map = new TreeMap<>();
         for (Post p : postagens) {
             map.computeIfAbsent(p.getAutor(), k -> new TreeSet<>()).add(p);
         }
