@@ -1,76 +1,72 @@
 import java.util.*;
 
 public class Blog {
-    private List<Post> postagens;
+    private Set<Post> postagens;
 
     public Blog() {
-        postagens = new ArrayList<>();
+        this.postagens = new HashSet<>();
     }
 
-    public void adicionarPostagem(Post postagem) {
-        for (Post p : postagens) {
-            if (p.getAutor().equals(postagem.getAutor()) &&
-                p.getTitulo().equals(postagem.getTitulo())) {
-                throw new RuntimeException("Postagem jah existente");
-            }
+    public void adicionarPostagem(Post post) {
+        if (this.postagens.contains(post)) {
+            throw new IllegalArgumentException("Postagem jah existente");
         }
-        postagens.add(postagem);
+        this.postagens.add(post);
     }
 
     public Set<Autor> obterTodosAutores() {
         Set<Autor> autores = new TreeSet<>();
-        for (Post p : postagens) {
-            autores.add(p.getAutor());
+        for (Post post : this.postagens) {
+            autores.add(post.getAutor());
         }
         return autores;
     }
 
     public Map<Categorias, Integer> obterContagemPorCategoria() {
-        Map<Categorias, Integer> contagem = new LinkedHashMap<>();
-        contagem.put(Categorias.DEVOPS, 0);
-        contagem.put(Categorias.DESENVOLVIMENTO, 0);
-        contagem.put(Categorias.DATA_SCIENCE, 0);
-
-        for (Post p : postagens) {
-            contagem.put(p.getCategoria(), contagem.get(p.getCategoria()) + 1);
+        Map<Categorias, Integer> contagem = new HashMap<>();
+        for (Post post : this.postagens) {
+            contagem.put(post.getCategoria(), contagem.getOrDefault(post.getCategoria(), 0) + 1);
         }
         return contagem;
     }
 
     public Set<Post> obterPostsPorAutor(Autor autor) {
-        Set<Post> posts = new TreeSet<>();
-        for (Post p : postagens) {
-            if (p.getAutor().equals(autor)) posts.add(p);
+        Set<Post> postsPorAutor = new TreeSet<>();
+        for (Post post : this.postagens) {
+            if (post.getAutor().equals(autor)) {
+                postsPorAutor.add(post);
+            }
         }
-        return posts;
+        return postsPorAutor;
     }
 
     public Set<Post> obterPostsPorCategoria(Categorias categoria) {
-        Set<Post> posts = new TreeSet<>();
-        for (Post p : postagens) {
-            if (p.getCategoria() == categoria) posts.add(p);
+        Set<Post> postsPorCategoria = new TreeSet<>();
+        for (Post post : this.postagens) {
+            if (post.getCategoria().equals(categoria)) {
+                postsPorCategoria.add(post);
+            }
         }
-        return posts;
+        return postsPorCategoria;
     }
 
     public Map<Categorias, Set<Post>> obterTodosPostsPorCategorias() {
-        Map<Categorias, Set<Post>> mapa = new LinkedHashMap<>();
-        mapa.put(Categorias.DEVOPS, new TreeSet<>());
-        mapa.put(Categorias.DESENVOLVIMENTO, new TreeSet<>());
-        mapa.put(Categorias.DATA_SCIENCE, new TreeSet<>());
-
-        for (Post p : postagens) {
-            mapa.get(p.getCategoria()).add(p);
+        Map<Categorias, Set<Post>> postsPorCategoria = new HashMap<>();
+        for (Post post : this.postagens) {
+            Set<Post> postsDaCategoria = postsPorCategoria.getOrDefault(post.getCategoria(), new TreeSet<>());
+            postsDaCategoria.add(post);
+            postsPorCategoria.put(post.getCategoria(), postsDaCategoria);
         }
-
-        return mapa;
+        return postsPorCategoria;
     }
 
     public Map<Autor, Set<Post>> obterTodosPostsPorAutor() {
-        Map<Autor, Set<Post>> mapa = new TreeMap<>();
-        for (Post p : postagens) {
-            mapa.computeIfAbsent(p.getAutor(), k -> new TreeSet<>()).add(p);
+        Map<Autor, Set<Post>> postsPorAutor = new HashMap<>();
+        for (Post post : this.postagens) {
+            Set<Post> postsDoAutor = postsPorAutor.getOrDefault(post.getAutor(), new TreeSet<>());
+            postsDoAutor.add(post);
+            postsPorAutor.put(post.getAutor(), postsDoAutor);
         }
-        return mapa;
+        return postsPorAutor;
     }
 }

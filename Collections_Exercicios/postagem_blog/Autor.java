@@ -17,26 +17,24 @@ public class Autor implements Comparable<Autor> {
 
     @Override
     public String toString() {
-        return nome + " " + sobrenome;
+        return String.format("%s %s", this.nome, this.sobrenome);
     }
 
     @Override
-    public int compareTo(Autor outro) {
-        int sobrenomeCompare = this.sobrenome.compareTo(outro.sobrenome);
-        if (sobrenomeCompare != 0) return sobrenomeCompare;
-        return this.nome.compareTo(outro.nome);
+    public int compareTo(Autor outroAutor) {
+        return this.toString().compareTo(outroAutor.toString());
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Autor)) return false;
-        Autor outro = (Autor) obj;
-        return nome.equals(outro.nome) && sobrenome.equals(outro.sobrenome);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Autor autor = (Autor) o;
+        return Objects.equals(nome, autor.nome) && Objects.equals(sobrenome, autor.sobrenome);
     }
 
     @Override
     public int hashCode() {
-        return nome.hashCode() * 31 + sobrenome.hashCode();
+        return Objects.hash(nome, sobrenome);
     }
 }
