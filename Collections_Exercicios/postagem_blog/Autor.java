@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Autor implements Comparable<Autor> {
     private String nome;
     private String sobrenome;

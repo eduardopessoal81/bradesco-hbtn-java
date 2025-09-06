@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Post implements Comparable<Post> {
     private Autor autor;
     private String titulo;
