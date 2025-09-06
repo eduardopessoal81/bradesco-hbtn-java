@@ -23,7 +23,7 @@ public class Blog {
     }
 
     public Map<Categorias, Integer> obterContagemPorCategoria() {
-        Map<Categorias, Integer> contagem = new HashMap<>();
+        Map<Categorias, Integer> contagem = new TreeMap<>();
         for (Post post : this.postagens) {
             contagem.put(post.getCategoria(), contagem.getOrDefault(post.getCategoria(), 0) + 1);
         }
@@ -51,7 +51,7 @@ public class Blog {
     }
 
     public Map<Categorias, Set<Post>> obterTodosPostsPorCategorias() {
-        Map<Categorias, Set<Post>> postsPorCategoria = new HashMap<>();
+        Map<Categorias, Set<Post>> postsPorCategoria = new TreeMap<>();
         for (Post post : this.postagens) {
             Set<Post> postsDaCategoria = postsPorCategoria.getOrDefault(post.getCategoria(), new TreeSet<>());
             postsDaCategoria.add(post);
@@ -61,7 +61,7 @@ public class Blog {
     }
 
     public Map<Autor, Set<Post>> obterTodosPostsPorAutor() {
-        Map<Autor, Set<Post>> postsPorAutor = new HashMap<>();
+        Map<Autor, Set<Post>> postsPorAutor = new TreeMap<>();
         for (Post post : this.postagens) {
             Set<Post> postsDoAutor = postsPorAutor.getOrDefault(post.getAutor(), new TreeSet<>());
             postsDoAutor.add(post);

@@ -1,4 +1,4 @@
-import java.util.Objects;
+import java.util.*;
 
 public class Autor implements Comparable<Autor> {
     private String nome;

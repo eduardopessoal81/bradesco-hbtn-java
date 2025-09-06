@@ -1,4 +1,4 @@
-import java.util.Objects;
+import java.util.*;
 
 public class Post implements Comparable<Post> {
     private Autor autor;
