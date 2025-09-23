@@ -28,12 +28,12 @@ public class Program {
 		Pedido pedido2 = new Pedido(2, List.of(produto1, produto6, produto2), cliente2);
 		Pedido pedido3 = new Pedido(3, List.of(produto4, produto6, produto5), cliente3);
 
-		Produto produtoMaior1 = Consulta.obterProdutoMaiorPreco(pedido1.getProdutos());
-		Produto produtoMaior2 = Consulta.obterProdutoMaiorPreco(pedido2.getProdutos());
-		Produto produtoMaior3 = Consulta.obterProdutoMaiorPreco(pedido3.getProdutos());
+		List<Produto> produtosMinimo1 = Consulta.obterProdutosPorPrecoMinimo(pedido1.getProdutos(), 25);
+		List<Produto> produtosMinimo2 = Consulta.obterProdutosPorPrecoMinimo(pedido2.getProdutos(), 500);
+		List<Produto> produtosMinimo3 = Consulta.obterProdutosPorPrecoMinimo(pedido3.getProdutos(), 30);
 
-		System.out.println(produtoMaior1);
-		System.out.println(produtoMaior2);
-		System.out.println(produtoMaior3);
+		System.out.println(produtosMinimo1);
+		System.out.println(produtosMinimo2);
+		System.out.println(produtosMinimo3);
 	}
 }
