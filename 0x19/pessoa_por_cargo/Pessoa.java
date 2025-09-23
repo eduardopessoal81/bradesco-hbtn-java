@@ -1,3 +1,5 @@
+import java.util.Locale;
+
 public class Pessoa {
     private int codigo;
     private String nome;
@@ -13,14 +15,34 @@ public class Pessoa {
         this.salario = salario;
     }
 
-    public int getCodigo() { return codigo; }
-    public String getNome() { return nome; }
-    public String getCargo() { return cargo; }
-    public int getIdade() { return idade; }
-    public double getSalario() { return salario; }
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public int getIdade() {
+        return idade;
+    }
+
+    public double getSalario() {
+        return salario;
+    }
+
+    public void setSalario(double salario) {
+        this.salario = salario;
+    }
 
     @Override
     public String toString() {
-        return String.format("[%d] %s %s %d R$ %.2f", codigo, nome, cargo, idade, salario);
+        return String.format(Locale.US, "[%d] %s %s %d R$ %.6f", 
+                codigo, nome, cargo, idade, salario)
+                .replace('.', ',');
     }
 }
