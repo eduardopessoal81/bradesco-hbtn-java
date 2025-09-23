@@ -1,4 +1,7 @@
 import java.util.*;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public class Pessoa implements Comparable<Pessoa> {
     private int codigo;
@@ -15,10 +18,12 @@ public class Pessoa implements Comparable<Pessoa> {
         this.salario = salario;
     }
 
-    @Override
-    public String toString() {
-        return String.format("[%d] %s %s %d R$ %.6f", codigo, nome, cargo, idade, salario);
-    }
+	@Override
+	public String toString() {
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols(new Locale("pt", "BR"));
+		DecimalFormat df = new DecimalFormat("0.000000", symbols);
+		return String.format("[%d] %s %s %d R$ %s", codigo, nome, cargo, idade, df.format(salario));
+	}
 
     @Override
     public int compareTo(Pessoa outra) {
