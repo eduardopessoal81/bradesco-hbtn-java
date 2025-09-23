@@ -1,3 +1,5 @@
+import java.util.Locale;
+
 public class Produto {
     private String nome;
     private double preco;
@@ -35,6 +37,11 @@ public class Produto {
 
     @Override
     public String toString() {
-        return nome + " " + preco + " " + peso + " " + quantidadeEmEstoque + " " + tipo;
+        return String.format("%s %s %s %d %s",
+                nome,
+                String.format(Locale.getDefault(), "%.6f", preco),
+                String.format(Locale.getDefault(), "%.6f", peso),
+                quantidadeEmEstoque,
+                tipo);
     }
 }
