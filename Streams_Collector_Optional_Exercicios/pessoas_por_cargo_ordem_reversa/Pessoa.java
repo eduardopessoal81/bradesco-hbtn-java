@@ -1,4 +1,4 @@
-import java.util.Locale;
+import java.util.Objects;
 
 public class Pessoa implements Comparable<Pessoa> {
     private int codigo;
@@ -15,34 +15,33 @@ public class Pessoa implements Comparable<Pessoa> {
         this.salario = salario;
     }
 
-    public int getCodigo() {
-        return codigo;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public String getCargo() {
-        return cargo;
-    }
-
-    public int getIdade() {
-        return idade;
-    }
-
-    public double getSalario() {
-        return salario;
-    }
+    public int getCodigo() { return codigo; }
+    public String getNome() { return nome; }
+    public String getCargo() { return cargo; }
+    public int getIdade() { return idade; }
+    public double getSalario() { return salario; }
 
     @Override
     public String toString() {
-        String salarioFormatado = String.format(Locale.US, "%.6f", salario).replace('.', ',');
-        return "[" + codigo + "] " + nome + " " + cargo + " " + idade + " R$ " + salarioFormatado;
+        return "[" + codigo + "] " + nome + " " + cargo + " " + idade + " R$ " + salario;
     }
 
     @Override
     public int compareTo(Pessoa outra) {
-        return Integer.compare(this.codigo, outra.codigo);
+        int nomeCompare = this.nome.compareTo(outra.nome);
+        return nomeCompare != 0 ? nomeCompare : Integer.compare(this.codigo, outra.codigo);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Pessoa)) return false;
+        Pessoa pessoa = (Pessoa) o;
+        return codigo == pessoa.codigo;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(codigo);
     }
 }
