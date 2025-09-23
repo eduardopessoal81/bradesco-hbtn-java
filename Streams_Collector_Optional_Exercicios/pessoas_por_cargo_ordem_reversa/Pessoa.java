@@ -1,7 +1,6 @@
-import java.io.Serializable;
-import java.text.DecimalFormat;
+import java.util.Locale;
 
-public class Pessoa implements Comparable<Pessoa>, Serializable {
+public class Pessoa implements Comparable<Pessoa> {
     private int codigo;
     private String nome;
     private String cargo;
@@ -16,22 +15,34 @@ public class Pessoa implements Comparable<Pessoa>, Serializable {
         this.salario = salario;
     }
 
-    public int getCodigo() { return codigo; }
-    public String getNome() { return nome; }
-    public String getCargo() { return cargo; }
-    public int getIdade() { return idade; }
-    public double getSalario() { return salario; }
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public int getIdade() {
+        return idade;
+    }
+
+    public double getSalario() {
+        return salario;
+    }
 
     @Override
     public String toString() {
-        DecimalFormat df = new DecimalFormat("0,000000");
-        df.setDecimalSeparatorAlwaysShown(true);
-        String salarioFormatado = df.format(salario).replace('.', ',');
+        String salarioFormatado = String.format(Locale.US, "%.6f", salario).replace('.', ',');
         return "[" + codigo + "] " + nome + " " + cargo + " " + idade + " R$ " + salarioFormatado;
     }
 
     @Override
-    public int compareTo(Pessoa other) {
-        return Integer.compare(this.codigo, other.codigo);
+    public int compareTo(Pessoa outra) {
+        return Integer.compare(this.codigo, outra.codigo);
     }
 }
