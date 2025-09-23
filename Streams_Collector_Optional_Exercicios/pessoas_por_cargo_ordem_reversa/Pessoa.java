@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
 public class Pessoa implements Comparable<Pessoa>, Serializable {
     private int codigo;
@@ -23,7 +24,10 @@ public class Pessoa implements Comparable<Pessoa>, Serializable {
 
     @Override
     public String toString() {
-        return "[" + codigo + "] " + nome + " " + cargo + " " + idade + " R$ " + salario;
+        DecimalFormat df = new DecimalFormat("0,000000");
+        df.setDecimalSeparatorAlwaysShown(true);
+        String salarioFormatado = df.format(salario).replace('.', ',');
+        return "[" + codigo + "] " + nome + " " + cargo + " " + idade + " R$ " + salarioFormatado;
     }
 
     @Override
