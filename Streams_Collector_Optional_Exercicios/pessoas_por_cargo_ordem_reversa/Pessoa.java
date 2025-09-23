@@ -22,7 +22,15 @@ public class Pessoa implements Comparable<Pessoa> {
 
     @Override
     public int compareTo(Pessoa outra) {
-        return Integer.compare(this.codigo, outra.codigo);
+        int nomeComparison = this.nome.compareTo(outra.nome);
+        if (nomeComparison != 0) {
+            return nomeComparison;
+        }
+        int idadeComparison = Integer.compare(this.idade, outra.idade);
+        if (idadeComparison != 0) {
+            return idadeComparison;
+        }
+        return Double.compare(this.salario, outra.salario);
     }
 
     public String getCargo() {
