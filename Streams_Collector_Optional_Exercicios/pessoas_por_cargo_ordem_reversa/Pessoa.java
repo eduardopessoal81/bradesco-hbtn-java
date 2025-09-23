@@ -1,4 +1,4 @@
-import java.util.Objects;
+import java.util.*;
 
 public class Pessoa implements Comparable<Pessoa> {
     private int codigo;
@@ -15,52 +15,17 @@ public class Pessoa implements Comparable<Pessoa> {
         this.salario = salario;
     }
 
-    public int getCodigo() {
-        return codigo;
+    @Override
+    public String toString() {
+        return String.format("[%d] %s %s %d R$ %.6f", codigo, nome, cargo, idade, salario);
     }
 
-    public String getNome() {
-        return nome;
+    @Override
+    public int compareTo(Pessoa outra) {
+        return Integer.compare(this.codigo, outra.codigo);
     }
 
     public String getCargo() {
         return cargo;
-    }
-
-    public int getIdade() {
-        return idade;
-    }
-
-    public double getSalario() {
-        return salario;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("[%d] %s %s %d R$ %s",
-                codigo,
-                nome,
-                cargo,
-                idade,
-                String.format("%.6f", salario).replace('.', ',')
-        );
-    }
-
-    @Override
-    public int compareTo(Pessoa other) {
-        return Integer.compare(this.codigo, other.codigo);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Pessoa pessoa = (Pessoa) o;
-        return codigo == pessoa.codigo;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(codigo);
     }
 }
