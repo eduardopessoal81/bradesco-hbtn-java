@@ -15,27 +15,46 @@ public class Pessoa implements Comparable<Pessoa> {
         this.salario = salario;
     }
 
-    public int getCodigo() { return codigo; }
-    public String getNome() { return nome; }
-    public String getCargo() { return cargo; }
-    public int getIdade() { return idade; }
-    public double getSalario() { return salario; }
+    public int getCodigo() {
+        return codigo;
+    }
 
-    @Override
-    public String toString() {
-        return "[" + codigo + "] " + nome + " " + cargo + " " + idade + " R$ " + salario;
+    public String getNome() {
+        return nome;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public int getIdade() {
+        return idade;
+    }
+
+    public double getSalario() {
+        return salario;
     }
 
     @Override
-    public int compareTo(Pessoa outra) {
-        int nomeCompare = this.nome.compareTo(outra.nome);
-        return nomeCompare != 0 ? nomeCompare : Integer.compare(this.codigo, outra.codigo);
+    public String toString() {
+        return String.format("[%d] %s %s %d R$ %s",
+                codigo,
+                nome,
+                cargo,
+                idade,
+                String.format("%.6f", salario).replace('.', ',')
+        );
+    }
+
+    @Override
+    public int compareTo(Pessoa other) {
+        return Integer.compare(this.codigo, other.codigo);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Pessoa)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Pessoa pessoa = (Pessoa) o;
         return codigo == pessoa.codigo;
     }
