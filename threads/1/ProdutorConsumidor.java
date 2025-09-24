@@ -14,7 +14,5 @@ public class ProdutorConsumidor {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-		
-        System.out.println("Execução finalizada!");
     }
 }
