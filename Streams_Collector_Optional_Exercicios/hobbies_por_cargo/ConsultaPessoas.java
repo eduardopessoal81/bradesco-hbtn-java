@@ -39,14 +39,18 @@ public class ConsultaPessoas {
     }
 	
 	public static Map<String, TreeSet<String>> obterHobbiesPorCargo(List<Pessoa> pessoas) {
-        return pessoas.stream()
-                .collect(Collectors.groupingBy(
-                        Pessoa::getCargo,
-                        TreeMap::new,
-                        Collectors.flatMapping(
-                                p -> p.getHobbies().stream(),
-                                Collectors.toCollection(TreeSet::new)
-                        )
-                ));
-    }
+		List<String> ordemDesejada = List.of("Product Owner", "Analista QA", "Desenvolvedor");
+
+		return pessoas.stream()
+            .collect(Collectors.groupingBy(
+                    Pessoa::getCargo,
+                    () -> new LinkedHashMap<String, TreeSet<String>>() {{
+                        ordemDesejada.forEach(c -> put(c, new TreeSet<>()));
+                    }},
+                    Collectors.flatMapping(
+                            p -> p.getHobbies().stream(),
+                            Collectors.toCollection(TreeSet::new)
+                    )
+            ));
+	}
 }
