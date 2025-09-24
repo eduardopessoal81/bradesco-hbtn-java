@@ -1,4 +1,3 @@
-import java.util.*;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -38,11 +37,43 @@ public class Pessoa implements Comparable<Pessoa> {
         return Double.compare(this.salario, outra.salario);
     }
 
-    public String getCargo() {
-        return cargo;
-    }
+	public int getCodigo() {
+		return codigo;
+	}
 
-    public int getIdade() {
-        return idade;
-    }
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(String cargo) {
+		this.cargo = cargo;
+	}
+
+	public int getIdade() {
+		return idade;
+	}
+
+	public void setIdade(int idade) {
+		this.idade = idade;
+	}
+
+	public double getSalario() {
+		return salario;
+	}
+
+	public void setSalario(double salario) {
+		this.salario = salario;
+	}
 }
